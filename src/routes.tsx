@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 // components
 import { RootLayout } from "@/components/layout/root";
 // view
-import { ExamplePage, HomePage } from "@/views";
+import { ExamplePage, HomePage, YoutubePage } from "@/views";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -11,6 +11,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/" element={<RootLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/example" element={<ExamplePage />} />
+
+        {/* Youtube */}
+        <Route path="/youtube" element={<YoutubePage />} />
       </Route>
     </Routes>
   );
