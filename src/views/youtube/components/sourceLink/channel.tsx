@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import fetchChannelInfo from "@/hooks/youtube/fetchChannelInfo";
+import { resolveChannelIdFromInput } from "@/hooks/youtube/resolveChannelIdFromInput";
 import { YoutubeChannelSchema } from "@/schemas/youtubeChannelSchema";
 import { useYoutubeStore } from "@/stores/youtubeStore";
 import { useState } from "react";
@@ -21,7 +23,14 @@ export const SourceLinkChannel: React.FC = () => {
     }
 
     try {
-      const data = await fetchChannelInfo(channelId);
+      const channelIdResponse = await resolveChannelIdFromInput(channelId);
+      if (!channelIdResponse) {
+        setErrorMessage("유효하지 않은 채널 ID입니다.");
+        return;
+      }
+      setChannelId(channelIdResponse);
+
+      const data = await fetchChannelInfo(channelIdResponse);
       const item = data.items?.[0];
 
       if (!item) {
@@ -69,14 +78,14 @@ export const SourceLinkChannel: React.FC = () => {
     <>
       <Tip>
         <p>
-          유튜브 채널 ID를 입력해주세요.
+          유튜브 채널 주소를 입력해주세요.
           <br />
-          예: <code>UC0f7DokmG5Hm4h335kkzRjA</code>
+          예: <code>https://www.youtube.com/@얼간이들</code>
           <br />
           <span className="text-sm text-gray-500">
-            채널 ID는 유튜브 주소가 <code>@핸들</code> 형태일 경우 페이지 소스
-            보기에서
-            <code>"channelId"</code>로 검색해 확인할 수 있습니다.
+            <code>/@핸들</code>, <code>/c/커스텀URL</code>,{" "}
+            <code>/channel/ID</code> 형식 모두 지원됩니다. 입력하신 주소에서
+            채널 ID를 자동으로 추출합니다.
           </span>
         </p>
       </Tip>
