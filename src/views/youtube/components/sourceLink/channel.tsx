@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import fetchChannelInfo from "@/hooks/youtube/fetchChannelInfo";
-import { resolveChannelIdFromInput } from "@/hooks/youtube/resolveChannelIdFromInput";
+import { resolveChannelIdFromInput } from "@/hooks/youtube/resolver";
 import { YoutubeChannelSchema } from "@/schemas/youtubeChannelSchema";
 import { useYoutubeStore } from "@/stores/youtubeStore";
 import { useState } from "react";
@@ -80,7 +80,7 @@ export const SourceLinkChannel: React.FC = () => {
         <p>
           유튜브 채널 주소를 입력해주세요.
           <br />
-          예: <code>https://www.youtube.com/@얼간이들</code>
+          예: <code>https://www.youtube.com/@IBS</code>
           <br />
           <span className="text-sm text-gray-500">
             <code>/@핸들</code>, <code>/c/커스텀URL</code>,{" "}
