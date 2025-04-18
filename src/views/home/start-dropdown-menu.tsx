@@ -7,6 +7,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useYoutubeStore } from "@/stores/youtubeStore";
 import { FaYoutube } from "react-icons/fa";
 import { PiInstagramLogoFill } from "react-icons/pi";
 
@@ -28,6 +29,14 @@ const LINKS = [
 ];
 
 export const StartDropdownMenu = () => {
+  const { reset: YouTubeStoreReset } = useYoutubeStore();
+
+  const handleLinkClick = (name: string) => {
+    if (name === "Youtube") {
+      YouTubeStoreReset();
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,6 +49,7 @@ export const StartDropdownMenu = () => {
               key={link.name}
               className="flex items-center justify-between"
               disabled={link.disabled}
+              onClick={() => handleLinkClick(link.name)}
               asChild
             >
               <a href={link.link} className="flex items-center gap-2">

@@ -1,15 +1,11 @@
-interface LoadingProps {
-  text?: string;
-}
+import { Loader2 } from "lucide-react"; // 아이콘 라이브러리 사용 (lucide-react 추천)
 
-export const Loading: React.FC<LoadingProps> = ({ text = "Loading..." }) => {
+export const Loading: React.FC = () => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75">
-      <div className="flex flex-col items-center space-y-4">
-        {/* Spinner */}
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-400 border-t-transparent"></div>
-        {/* Loading Text */}
-        <p className="text-lg font-medium text-gray-700">{text}</p>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="flex flex-col items-center gap-2 text-white">
+        <Loader2 className="h-6 w-6 animate-spin" />
+        <p className="text-sm">데이터를 불러오는 중입니다...</p>
       </div>
     </div>
   );

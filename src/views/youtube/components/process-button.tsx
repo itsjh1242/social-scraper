@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useYoutubeStore, YoutubeProcess } from "@/stores/youtubeStore";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 interface ProcessButtonProps {
   nextStep?: YoutubeProcess;
@@ -11,15 +12,17 @@ export const ProcessButton: React.FC<ProcessButtonProps> = ({
 }) => {
   const { setProcess } = useYoutubeStore();
   return (
-    <div className="flex w-full gap-4">
-      {nextStep && (
-        <Button className="w-full" onClick={() => setProcess(nextStep)}>
-          다음
+    <div className="flex w-full gap-2">
+      {prevStep && (
+        <Button className="w-full flex-1" onClick={() => setProcess(prevStep)}>
+          <ChevronLeftIcon />
+          이전
         </Button>
       )}
-      {prevStep && (
-        <Button className="w-full" onClick={() => setProcess(prevStep)}>
-          이전
+      {nextStep && (
+        <Button className="w-full flex-1" onClick={() => setProcess(nextStep)}>
+          다음
+          <ChevronRightIcon />
         </Button>
       )}
     </div>

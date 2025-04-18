@@ -6,7 +6,7 @@ export const HomePage: React.FC = () => {
   return (
     <Section>
       {/* Hero */}
-      <div className="space-y-4">
+      <div className="space-y-4 text-center">
         <h1 className="text-4xl leading-tight font-bold">
           소셜 미디어 데이터, <br />한 곳에서 수집하고 분석하세요
         </h1>

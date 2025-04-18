@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ChevronLeftIcon } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface SectionProps {
   children: React.ReactNode;
@@ -31,17 +32,12 @@ export const SectionHeader: React.FC<FeatureCardProps> = ({
   };
   return (
     <div className="flex w-full flex-col items-start gap-4">
-      <div className="flex items-center gap-4">
-        <ChevronLeftIcon
-          size={32}
-          className="cursor-pointer transition hover:scale-110"
-          onClick={handleBack}
-        />
-        <h1 className="text-4xl leading-tight font-bold">{title}</h1>
+      <div className="flex cursor-pointer items-center" onClick={handleBack}>
+        <ChevronLeftIcon size={16} />
+        <Button variant="link">메인으로 돌아가기</Button>
       </div>
-      <p className="text-muted-foreground pl-13 text-lg break-keep">
-        {description}
-      </p>
+      <h1 className="text-4xl leading-tight font-bold">{title}</h1>
+      <p className="text-muted-foreground text-lg break-keep">{description}</p>
     </div>
   );
 };
