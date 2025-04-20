@@ -15,7 +15,7 @@ const LINKS = [
   {
     name: "Youtube",
     icon: <FaYoutube className="text-red-500" />,
-    shortcut: "개발 중",
+    shortcut: "사용 가능",
     disabled: false,
     link: "/youtube",
   },

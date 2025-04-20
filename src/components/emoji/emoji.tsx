@@ -26,3 +26,16 @@ export const BarChart: React.FC<EmojiProps> = ({ size = 40 }) => {
     />
   );
 };
+
+export const FileFolder: React.FC<EmojiProps> = ({ size = 40 }) => {
+  return (
+    <img
+      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/File%20Folder.webp"
+      alt="File Folder"
+      style={{
+        width: size,
+        height: size,
+      }}
+    />
+  );
+};
