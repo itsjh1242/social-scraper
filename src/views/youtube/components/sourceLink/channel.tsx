@@ -11,7 +11,13 @@ import { Tip } from "../tip";
 export const SourceLinkChannel: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { channelId, setChannelId, channel, setChannel } = useYoutubeStore();
+  const {
+    channelId,
+    setChannelId,
+    channel,
+    setChannel,
+    setSourceLinkComplete,
+  } = useYoutubeStore();
 
   /**
    * @description 채널 ID를 입력받아 유튜브 API를 통해 채널 정보를 조회합니다.
@@ -23,7 +29,9 @@ export const SourceLinkChannel: React.FC = () => {
     }
 
     try {
-      const channelIdResponse = await resolveChannelIdFromInput(channelId);
+      const channelIdResponse = await resolveChannelIdFromInput(
+        channelId.trim(),
+      );
       if (!channelIdResponse) {
         setErrorMessage("유효하지 않은 채널 ID입니다.");
         return;
@@ -58,6 +66,7 @@ export const SourceLinkChannel: React.FC = () => {
       };
 
       setChannel(parsedChannelData);
+      setSourceLinkComplete(true);
       setErrorMessage("");
     } catch (error) {
       console.error(error);
@@ -71,6 +80,7 @@ export const SourceLinkChannel: React.FC = () => {
   const handleReset = () => {
     setChannelId("");
     setChannel(null);
+    setSourceLinkComplete(false);
     setErrorMessage("");
   };
 

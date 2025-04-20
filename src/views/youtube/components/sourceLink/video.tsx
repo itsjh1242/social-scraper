@@ -13,7 +13,8 @@ import { Tip } from "../tip";
 export const SourceLinkVideo: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { video, setVideo, videoId, setVideoId } = useYoutubeStore();
+  const { video, setVideo, videoId, setVideoId, setSourceLinkComplete } =
+    useYoutubeStore();
 
   /**
    * @description 동영상 ID를 입력받아 유튜브 API를 통해 동영상 정보를 조회합니다.
@@ -25,7 +26,7 @@ export const SourceLinkVideo: React.FC = () => {
     }
 
     try {
-      const videoIdResponse = await resolveVideoIdFromInput(videoId);
+      const videoIdResponse = await resolveVideoIdFromInput(videoId.trim());
       if (!videoIdResponse) {
         setErrorMessage("유효하지 않은 동영상 ID입니다.");
         return;
@@ -56,6 +57,7 @@ export const SourceLinkVideo: React.FC = () => {
       };
 
       setVideo(parsedVideoData);
+      setSourceLinkComplete(true);
       setErrorMessage("");
     } catch (error) {
       console.error(error);
@@ -69,6 +71,7 @@ export const SourceLinkVideo: React.FC = () => {
   const handleInputReset = () => {
     setVideoId("");
     setVideo(null);
+    setSourceLinkComplete(false);
     setErrorMessage("");
   };
 

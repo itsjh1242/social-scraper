@@ -33,6 +33,12 @@ interface YoutubeStore {
   setSourceType: (type: string) => void;
 
   /**
+   * @description Source Link 단계 완료
+   */
+  sourceLinkComplete: boolean;
+  setSourceLinkComplete: (complete: boolean) => void;
+
+  /**
    * @description 유튜브 채널 ID
    */
   channelId: string;
@@ -92,6 +98,10 @@ export const useYoutubeStore = create<YoutubeStore>()(
       sourceType: "channel",
       setSourceType: (type: string) => set({ sourceType: type }),
 
+      sourceLinkComplete: false,
+      setSourceLinkComplete: (complete: boolean) =>
+        set({ sourceLinkComplete: complete }),
+
       channelId: "",
       setChannelId: (channelId: string) => set({ channelId }),
 
@@ -116,6 +126,7 @@ export const useYoutubeStore = create<YoutubeStore>()(
         set({
           process: "sourceType",
           sourceType: "channel",
+          sourceLinkComplete: false,
           channelId: "",
           channel: null,
           channelVideos: null,

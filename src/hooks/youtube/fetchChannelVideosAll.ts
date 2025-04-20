@@ -1,8 +1,15 @@
 import { YouTubeVideoSchema } from "@/schemas/youtubeVideoSchema";
 import apiKey from "./key";
 
+/**
+ * @description 진행도 프로세스 단계
+ * 1단계: 비디오 플레이리스트 수집 0 ~ 70%
+ * 2단계: 비디오 상세 정보 조회 70 ~ 100%
+ */
+
 const fetchChannelVideosAll = async (
   channelId: string,
+  onProgress?: (count: number, percent: number) => void,
 ): Promise<YouTubeVideoSchema[]> => {
   // 1단계: 업로드 재생목록 ID 조회
   const channelRes = await fetch(
@@ -25,6 +32,7 @@ const fetchChannelVideosAll = async (
     }
   >();
   let nextPageToken: string | undefined = undefined;
+  let totalVideos = 0;
 
   // 2단계: playlistItems로 videoId 수집
   do {
@@ -42,7 +50,15 @@ const fetchChannelVideosAll = async (
         };
       }[];
       nextPageToken?: string;
+      pageInfo?: {
+        totalResults: number;
+        resultsPerPage: number;
+      };
     } = await playlistRes.json();
+
+    if (totalVideos === 0 && playlistData.pageInfo?.totalResults) {
+      totalVideos = playlistData.pageInfo.totalResults;
+    }
 
     playlistData.items?.forEach((item) => {
       const videoId = item.contentDetails.videoId;
@@ -53,6 +69,11 @@ const fetchChannelVideosAll = async (
         thumbnail: item.snippet.thumbnails.high.url,
         publishedAt: item.snippet.publishedAt,
       });
+
+      if (onProgress && totalVideos > 0) {
+        const percent = Math.min((videoIdList.length / totalVideos) * 70, 70);
+        onProgress(videoIdList.length, Math.floor(percent));
+      }
     });
 
     nextPageToken = playlistData.nextPageToken;
@@ -65,8 +86,9 @@ const fetchChannelVideosAll = async (
     );
 
   const results: YouTubeVideoSchema[] = [];
+  const chunks = chunk(videoIdList, 50);
 
-  for (const group of chunk(videoIdList, 50)) {
+  for (const [index, group] of chunks.entries()) {
     const statsRes = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${group.join(",")}&key=${apiKey}`,
     );
@@ -109,6 +131,11 @@ const fetchChannelVideosAll = async (
         commentCount: parseInt(item.statistics.commentCount ?? "0"),
       });
     });
+
+    if (onProgress) {
+      const percent = 70 + ((index + 1) / chunks.length) * 30; // 70~100 사이 비율 계산
+      onProgress(videoIdList.length, Math.min(Math.floor(percent), 100));
+    }
   }
 
   return results;

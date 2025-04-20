@@ -130,7 +130,8 @@ const VideoList: React.FC<VideoListProps> = ({ videos }) => {
 
 const GetVideosComponent: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const { channel, setChannelVideos } = useYoutubeStore();
+  const { channel, setChannelVideos, progress, updateProgress } =
+    useYoutubeStore();
 
   const handleGetVideos = async () => {
     if (!channel || !channel.id) {
@@ -140,7 +141,7 @@ const GetVideosComponent: React.FC = () => {
 
     try {
       setLoading(true);
-      const response = await fetchChannelVideosAll(channel?.id);
+      const response = await fetchChannelVideosAll(channel?.id, updateProgress);
       if (response) {
         setChannelVideos(response);
       } else {
@@ -153,9 +154,8 @@ const GetVideosComponent: React.FC = () => {
     }
   };
 
-  if (!channel || loading) {
-    return <Loading />;
-  }
+  if (!channel) return <Loading />;
+  if (loading) return <Loading progress={progress} />;
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">

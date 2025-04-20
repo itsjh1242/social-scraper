@@ -10,13 +10,10 @@ export const YoutubePage: React.FC = () => {
           인사이트를 제공합니다."
       />
       <div
-        className="flex h-full flex-1"
+        className="flex h-full w-full flex-1"
         style={{ maxHeight: "calc(100% - 160px)" }}
       >
-        <div className="flex h-full w-[70%] pr-4">
-          <Setup />
-        </div>
-        <div className="w-[30%] border-l pl-4" />
+        <Setup />
       </div>
     </Section>
   );
