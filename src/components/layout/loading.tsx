@@ -2,6 +2,7 @@ import { Loader2 } from "lucide-react";
 
 interface LoadingProps {
   progress?: number; // 0~100 사이 숫자
+  text?: string; // 로딩 중일 때 보여줄 텍스트
 }
 
 export const Loading: React.FC<LoadingProps> = ({ progress }) => {

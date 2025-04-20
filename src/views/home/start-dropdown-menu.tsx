@@ -52,7 +52,10 @@ export const StartDropdownMenu = () => {
               onClick={() => handleLinkClick(link.name)}
               asChild
             >
-              <a href={link.link} className="flex items-center gap-2">
+              <a
+                href={`${import.meta.env.VITE_BROWSER_ROUTER_BASE_NAME}${link.link}`}
+                className="flex items-center gap-2"
+              >
                 {link.icon}
                 {link.name}
                 <DropdownMenuShortcut>{link.shortcut}</DropdownMenuShortcut>
