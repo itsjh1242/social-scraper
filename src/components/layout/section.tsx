@@ -28,8 +28,9 @@ export const SectionHeader: React.FC<FeatureCardProps> = ({
   description,
 }) => {
   const handleBack = () => {
-    window.location.href = "/";
+    window.location.href = `${import.meta.env.VITE_BROWSER_ROUTER_BASE_NAME}/`;
   };
+
   return (
     <div className="flex w-full flex-col items-start gap-4">
       <div className="flex cursor-pointer items-center" onClick={handleBack}>
