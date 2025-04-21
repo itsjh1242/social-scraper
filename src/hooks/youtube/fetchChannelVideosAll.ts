@@ -10,7 +10,11 @@ import apiKey from "./key";
 const fetchChannelVideosAll = async (
   channelId: string,
   onProgress?: (percent: number) => void,
+  untilYear = 1,
 ): Promise<YouTubeVideoSchema[]> => {
+  const cutoffDate = new Date();
+  cutoffDate.setFullYear(cutoffDate.getFullYear() - untilYear);
+
   // 1단계: 업로드 재생목록 ID 조회
   const channelRes = await fetch(
     `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`,
@@ -39,6 +43,7 @@ const fetchChannelVideosAll = async (
     const playlistRes = await fetch(
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${uploadsId}&maxResults=50&pageToken=${nextPageToken || ""}&key=${apiKey}`,
     );
+
     const playlistData: {
       items?: {
         contentDetails: { videoId: string };
@@ -60,8 +65,17 @@ const fetchChannelVideosAll = async (
       totalVideos = playlistData.pageInfo.totalResults;
     }
 
+    let stopFetching = false;
+
     playlistData.items?.forEach((item) => {
       const videoId = item.contentDetails.videoId;
+      const publishedAt = new Date(item.snippet.publishedAt);
+
+      if (publishedAt < cutoffDate) {
+        stopFetching = true;
+        return;
+      }
+
       videoIdList.push(videoId);
       videoMeta.set(videoId, {
         title: item.snippet.title,
@@ -75,6 +89,10 @@ const fetchChannelVideosAll = async (
         onProgress(Math.floor(percent));
       }
     });
+
+    if (stopFetching) {
+      break;
+    }
 
     nextPageToken = playlistData.nextPageToken;
   } while (nextPageToken);

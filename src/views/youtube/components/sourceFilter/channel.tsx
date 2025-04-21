@@ -6,6 +6,15 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { exportVideosToExcel } from "@/hooks/export/exportYoutubeVideosToExcel";
 import { parseKoreanDate } from "@/hooks/func/formatDate";
 import { formatDuration } from "@/hooks/func/parseISODuration";
@@ -130,8 +139,16 @@ const VideoList: React.FC<VideoListProps> = ({ videos }) => {
 
 const GetVideosComponent: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [untilYears, setUntilYears] = useState<number | null>(null);
   const { channel, setChannelVideos, progress, setProgress } =
     useYoutubeStore();
+
+  const oldestYear = channel?.publishedAt
+    ? new Date(channel.publishedAt).getFullYear()
+    : new Date().getFullYear();
+
+  const currentYear = new Date().getFullYear();
+  const yearRange = currentYear - oldestYear + 1; // 포함해서
 
   const handleGetVideos = async () => {
     if (!channel || !channel.id) {
@@ -184,7 +201,30 @@ const GetVideosComponent: React.FC = () => {
         </span>
       </p>
 
-      <Button onClick={handleGetVideos}>데이터 가져오기</Button>
+      <div className="flex items-center gap-2">
+        <Select
+          value={untilYears?.toString()}
+          onValueChange={(value) => setUntilYears(Number(value))}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="년도 필터링" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>년도</SelectLabel>
+              {Array.from({ length: yearRange }, (_, i) => {
+                const value = i + 1; // 1년 ~ N년
+                return (
+                  <SelectItem key={value} value={value.toString()}>
+                    {value}년 전
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Button onClick={handleGetVideos}>데이터 가져오기</Button>
+      </div>
     </div>
   );
 };
