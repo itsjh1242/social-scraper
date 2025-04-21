@@ -156,6 +156,11 @@ const GetVideosComponent: React.FC = () => {
       return;
     }
 
+    if (!untilYears) {
+      alert("수집 범위를 선택해주세요.");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await fetchChannelVideosAll(channel?.id, setProgress);
@@ -192,13 +197,7 @@ const GetVideosComponent: React.FC = () => {
           {channel.statistics.viewCount.toLocaleString()}회
         </span>
         입니다.
-        <br />
-        이 채널의 모든 영상 데이터를 불러올까요?
-        <br />
-        <span className="text-xs text-gray-400">
-          예상 API 사용량: 약{" "}
-          {Math.ceil(channel.statistics.videoCount / 50) * 2} quota 소모 예정
-        </span>
+        <br />이 채널의 모든 영상 데이터를 불러올까요?
       </p>
 
       <div className="flex items-center gap-2">
@@ -207,16 +206,18 @@ const GetVideosComponent: React.FC = () => {
           onValueChange={(value) => setUntilYears(Number(value))}
         >
           <SelectTrigger>
-            <SelectValue placeholder="년도 필터링" />
+            <SelectValue placeholder="수집 범위 선택" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>년도</SelectLabel>
+              <SelectLabel>영상 수집 범위</SelectLabel>
               {Array.from({ length: yearRange }, (_, i) => {
-                const value = i + 1; // 1년 ~ N년
+                const value = i + 1;
+                const isMax = value === yearRange;
+
                 return (
                   <SelectItem key={value} value={value.toString()}>
-                    {value}년 전
+                    {isMax ? "전체 기간" : `최근 ${value}년 간`}
                   </SelectItem>
                 );
               })}
