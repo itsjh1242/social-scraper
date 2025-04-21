@@ -2,6 +2,7 @@ import { Section } from "@/components/layout/section";
 import { StartDropdownMenu } from "./start-dropdown-menu";
 
 import { BarChart, Briefcase, FileFolder } from "@/components/emoji/emoji";
+import { activeSocials } from "./active-socials";
 
 export const HomePage: React.FC = () => {
   return (
@@ -25,9 +26,17 @@ export const HomePage: React.FC = () => {
       <div className="space-y-4 text-center">
         <p className="text-muted-foreground text-sm">지원 중인 플랫폼</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <PlatformBadge label="YouTube" color="#FF0000" />
-          <PlatformBadge label="Twitter" color="#1DA1F2" disabled />
-          <PlatformBadge label="Instagram" color="#E1306C" disabled />
+          {activeSocials.map((active) => {
+            return (
+              <PlatformBadge
+                key={active.name}
+                label={active.name}
+                color={active.color}
+                shortcut={active.shortcut}
+                disabled={active.disabled}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -66,10 +75,12 @@ export const HomePage: React.FC = () => {
 const PlatformBadge = ({
   label,
   color,
+  shortcut,
   disabled = false,
 }: {
   label: string;
   color: string;
+  shortcut: string;
   disabled?: boolean;
 }) => {
   return (
@@ -79,7 +90,7 @@ const PlatformBadge = ({
       }`}
       style={{ backgroundColor: disabled ? undefined : color }}
     >
-      {label} {disabled && "(준비 중)"}
+      {label} {disabled && <span>({shortcut})</span>}
     </span>
   );
 };

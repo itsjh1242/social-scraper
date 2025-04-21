@@ -42,3 +42,21 @@ export const SectionHeader: React.FC<FeatureCardProps> = ({
     </div>
   );
 };
+
+interface SectionContentProps {
+  children: React.ReactNode;
+  className?: string;
+}
+export const SectionContent: React.FC<SectionContentProps> = ({
+  children,
+  className,
+}) => {
+  return (
+    <div
+      className={cn(`flex h-full w-full flex-1`, className)}
+      style={{ maxHeight: "calc(100% - 160px)" }}
+    >
+      {children}
+    </div>
+  );
+};

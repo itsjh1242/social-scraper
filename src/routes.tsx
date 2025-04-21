@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 // components
 import { RootLayout } from "@/components/layout/root";
 // view
-import { ExamplePage, HomePage, YoutubePage } from "@/views";
+import { ExamplePage, HomePage, NaverPage, YoutubePage } from "@/views";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -14,6 +14,8 @@ const AppRoutes: React.FC = () => {
 
         {/* Youtube */}
         <Route path="/youtube" element={<YoutubePage />} />
+        {/* Naver */}
+        <Route path="/naver" element={<NaverPage />} />
       </Route>
     </Routes>
   );

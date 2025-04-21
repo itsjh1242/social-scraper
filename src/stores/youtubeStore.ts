@@ -14,11 +14,6 @@ interface YoutubeStore {
    */
   progress: number;
   setProgress: (progress: number) => void;
-  currentCount: number;
-  setCurrentCount: (count: number) => void;
-  targetCount: number;
-  setTargetCount: (count: number) => void;
-  updateProgress: (count: number, percvent: number) => void;
 
   /**
    * @description 유튜브 데이터 수집 프로세스 단계
@@ -85,12 +80,6 @@ export const useYoutubeStore = create<YoutubeStore>()(
     (set) => ({
       progress: 0,
       setProgress: (progress: number) => set({ progress }),
-      currentCount: 0,
-      setCurrentCount: (count: number) => set({ currentCount: count }),
-      targetCount: 0,
-      setTargetCount: (count: number) => set({ targetCount: count }),
-      updateProgress: (count: number, percent: number) =>
-        set({ currentCount: count, progress: percent }),
 
       process: "sourceType",
       setProcess: (process: YoutubeProcess) => set({ process }),
@@ -134,8 +123,6 @@ export const useYoutubeStore = create<YoutubeStore>()(
           video: null,
           videoComments: null,
           progress: 0,
-          currentCount: 0,
-          targetCount: 0,
         }),
     }),
     {

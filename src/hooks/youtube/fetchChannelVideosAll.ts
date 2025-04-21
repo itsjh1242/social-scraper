@@ -9,7 +9,7 @@ import apiKey from "./key";
 
 const fetchChannelVideosAll = async (
   channelId: string,
-  onProgress?: (count: number, percent: number) => void,
+  onProgress?: (percent: number) => void,
 ): Promise<YouTubeVideoSchema[]> => {
   // 1단계: 업로드 재생목록 ID 조회
   const channelRes = await fetch(
@@ -72,7 +72,7 @@ const fetchChannelVideosAll = async (
 
       if (onProgress && totalVideos > 0) {
         const percent = Math.min((videoIdList.length / totalVideos) * 70, 70);
-        onProgress(videoIdList.length, Math.floor(percent));
+        onProgress(Math.floor(percent));
       }
     });
 
@@ -134,7 +134,7 @@ const fetchChannelVideosAll = async (
 
     if (onProgress) {
       const percent = 70 + ((index + 1) / chunks.length) * 30; // 70~100 사이 비율 계산
-      onProgress(videoIdList.length, Math.min(Math.floor(percent), 100));
+      onProgress(Math.min(Math.floor(percent), 100));
     }
   }
 

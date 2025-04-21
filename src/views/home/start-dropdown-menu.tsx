@@ -8,25 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useYoutubeStore } from "@/stores/youtubeStore";
-import { FaYoutube } from "react-icons/fa";
-import { PiInstagramLogoFill } from "react-icons/pi";
-
-const LINKS = [
-  {
-    name: "Youtube",
-    icon: <FaYoutube className="text-red-500" />,
-    shortcut: "사용 가능",
-    disabled: false,
-    link: "/youtube",
-  },
-  {
-    name: "Instagram",
-    icon: <PiInstagramLogoFill className="text-pink-500" />,
-    shortcut: "준비 중",
-    disabled: true,
-    link: "/instagram",
-  },
-];
+import { activeSocials } from "./active-socials";
 
 export const StartDropdownMenu = () => {
   const { reset: YouTubeStoreReset } = useYoutubeStore();
@@ -44,21 +26,21 @@ export const StartDropdownMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
-          {LINKS.map((link) => (
+          {activeSocials.map((active) => (
             <DropdownMenuItem
-              key={link.name}
+              key={active.name}
               className="flex items-center justify-between"
-              disabled={link.disabled}
-              onClick={() => handleLinkClick(link.name)}
+              disabled={active.disabled}
+              onClick={() => handleLinkClick(active.name)}
               asChild
             >
               <a
-                href={`${import.meta.env.VITE_BROWSER_ROUTER_BASE_NAME}${link.link}`}
+                href={`${import.meta.env.VITE_BROWSER_ROUTER_BASE_NAME}${active.link}`}
                 className="flex items-center gap-2"
               >
-                {link.icon}
-                {link.name}
-                <DropdownMenuShortcut>{link.shortcut}</DropdownMenuShortcut>
+                {active.icon}
+                {active.name}
+                <DropdownMenuShortcut>{active.shortcut}</DropdownMenuShortcut>
               </a>
             </DropdownMenuItem>
           ))}

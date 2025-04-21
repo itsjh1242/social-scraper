@@ -18,7 +18,7 @@ import { Tip } from "../tip";
 export const SourceFilterVideo: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [limit, setLimit] = useState<number>(100);
-  const { video, videoComments, setVideoComments, progress, updateProgress } =
+  const { video, videoComments, setVideoComments, progress, setProgress } =
     useYoutubeStore();
 
   const handleGetComments = async () => {
@@ -37,7 +37,7 @@ export const SourceFilterVideo: React.FC = () => {
       const response = await fetchVideoComments(
         video.videoId,
         limit,
-        updateProgress,
+        setProgress,
       );
       if (response) {
         setVideoComments(response);
@@ -85,13 +85,18 @@ export const SourceFilterVideo: React.FC = () => {
       )}
       {videoComments && (
         <>
-          <Button
-            className="cursor-pointer bg-blue-500 hover:bg-blue-600"
-            onClick={() => exportCommentsToExcel(video, videoComments)}
-          >
-            <FaFileExcel />
-            Excel 다운로드
-          </Button>
+          <div className="flex w-full gap-2">
+            <Button
+              className="flex-1 cursor-pointer bg-blue-500 hover:bg-blue-600"
+              onClick={() => exportCommentsToExcel(video, videoComments)}
+            >
+              <FaFileExcel />
+              Excel 다운로드
+            </Button>
+            <Button variant="outline" onClick={() => setVideoComments(null)}>
+              다시하기
+            </Button>
+          </div>
           <div className="min-h-0 space-y-2 overflow-y-auto py-5">
             <div className="space-y-2">
               <p className="text-muted-foreground text-sm">

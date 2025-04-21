@@ -12,7 +12,7 @@ export const Loading: React.FC<LoadingProps> = ({ progress }) => {
         <Loader2 className="h-6 w-6 animate-spin" />
         <p className="text-sm">
           {typeof progress === "number"
-            ? `댓글 데이터를 수집 중입니다... (${progress}%)`
+            ? `데이터를 수집 중입니다... (${progress}%)`
             : "데이터를 불러오는 중입니다..."}
         </p>
       </div>

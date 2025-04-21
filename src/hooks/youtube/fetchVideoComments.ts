@@ -4,7 +4,7 @@ import apiKey from "./key";
 export const fetchVideoComments = async (
   videoId: string,
   limit: number,
-  onProgress?: (count: number, percent: number) => void,
+  onProgress?: (percent: number) => void,
 ): Promise<YouTubeCommentSchema[]> => {
   const comments: YouTubeCommentSchema[] = [];
   let nextPageToken: string | undefined = undefined;
@@ -40,7 +40,7 @@ export const fetchVideoComments = async (
 
     if (onProgress) {
       const percent = Math.min((comments.length / limit) * 100, 100);
-      onProgress(comments.length, Math.floor(percent));
+      onProgress(Math.floor(percent));
     }
 
     if (!data.nextPageToken) break;
